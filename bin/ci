@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# Check for usac-dev docker-network, create if doesn't exist
-(docker network ls | grep -E '(^|\s)usac-dev($|\s)') || docker network create usac-dev
+# Check for bowtie-dev docker-network, create if doesn't exist
+(docker network ls | grep -E '(^|\s)bowtie-dev($|\s)') || docker network create bowtie-dev
 
 bin/run "env"
 
-if [ ! -d ../usac-dev ]; then
-  bin/run "aws s3 cp --recursive s3://$AWS_BUCKET_NAME/usac-dev/ ../usac-dev"
+# if [ ! -d ../bowtie-dev ]; then
+#   bin/run "aws s3 cp --recursive s3://$AWS_BUCKET_NAME/bowtie-dev/ ../bowtie-dev"
 
-  bin/run "docker-compose -f ../usac-dev/docker-compose.yml up -d"
-fi
+#   bin/run "docker-compose -f ../bowtie-dev/docker-compose.yml up -d"
+# fi
 
 bin/run "docker ps"
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Check for usac-dev docker-network, create if doesn't exist
-(docker network ls | grep -E '(^|\s)usac-dev($|\s)') || docker network create usac-dev
+# Check for bowtie-dev docker-network, create if doesn't exist
+(docker network ls | grep -E '(^|\s)bowtie-dev($|\s)') || docker network create bowtie-dev
 
 # Install git pre-push hook (run tests/linting locally before allowing pushing changes)
 ([ ! -e .git/hooks/pre-push ] || rm .git/hooks/pre-push) && ln -s ../../bin/pre-push .git/hooks

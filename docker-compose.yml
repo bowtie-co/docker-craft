@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   # PHP Craft CMS Service
-  usac-craft: &api
+  craft-cms: &api
     build: .
     volumes:
       - .:/var/www/app
@@ -15,52 +15,24 @@ services:
     networks:
       - proxy-network
     environment:
-      # DB_DSN: mysql:host=nextgen-db;port=3306;dbname=craft_local
-      # DB_HOST: nextgen-db
-      # DB_PORT: 3306
-      # DB_USER: root
-      # DB_PASSWORD: usacycling
-      # DB_NAME: craft_local
-      DATABASE_HOST: nextgen-db
+      DATABASE_TYPE: pgsql
+      DATABASE_HOST: postgres
       DATABASE_PORT: 3306
       DATABASE_USER: root
-      DATABASE_PASS: usacycling
+      DATABASE_PASS: b0Wt1eD3v5
       DATABASE_NAME: craft_local
-      APP_NAME: usac-craft
+      APP_NAME: craft-cms
       APP_ENV: local
       # LOG_CHANNEL: stack
-      APP_URL: https://craft.local.usacycling.org
-      # AWS_PROFILE: usac
-      # AWS_REGION: us-east-1
-      # AWS_BUCKET: usac-craft-uploads-development
-      # APP_KEY: 'base64:2GtchldonwSHmDL5O6/9902vBTTCjQMF0lpLtdcHwPQ='
-      # REDIS_HOST: redis
-      # REDIS_PORT: 6379
-      # REDIS_QUEUE: local
-      # QUEUE_CONNECTION: redis
-      # BROADCAST_DRIVER: redis
-      # CACHE_DRIVER: redis
-      # SESSION_DRIVER: redis
-      # SESSION_LIFETIME: '120'
-      # CORS_ALLOWED_ORIGINS: https://permit.local.usacycling.org,https://membership.local.usacycling.org
-      # LOG_SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
-      # SHOPIFY_BASE_URI: https://usac-test-store.myshopify.com
-      # SHOPIFY_STOREFRONT_API_TOKEN: 02b536b54ff7680394ac6a1a7a7e62f5
-      # SHOPIFY_API_KEY: d269cc99db06e14480f6b28aecb2e2a7
-      # SHOPIFY_PASSWORD: 8ff90a43542fb3cc093a4881b7101866
-      # SHOPIFY_SHARED_SECRET: d6619ec05a102d4bb1d6d335a71ad841
-      # AIRBRAKE_PROJECT_ID: 250775
-      # AIRBRAKE_PROJECT_KEY: cfe02276ca41070fccce941f5b0a1fb2
-      # INTERNAL_API_TOKENS: local:YGfn8U9P465L7LCt
-      # PERMITTING_BASE_URL: https://permit.local.usacycling.org
+      APP_URL: https://craft.bowtie.dev
     labels:
       - "traefik.enable=true"
       - "traefik.frontend.headers.SSLRedirect=true"
-      - "traefik.frontend.rule=Host:craft.local.usacycling.org"
+      - "traefik.frontend.rule=Host:craft.bowtie.dev"
       - "traefik.port=80"
 
 # Docker Networks
 networks:
   proxy-network:
     external:
-      name: usac-dev
+      name: bowtie-dev

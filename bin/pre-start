@@ -55,8 +55,8 @@ if [[ -f .env ]]; then
   fi
 fi
 
-# Check for usac-dev docker-network, create if doesn't exist
-(docker network ls | grep -E '(^|\s)usac-dev($|\s)') || docker network create usac-dev
+# Check for bowtie-dev docker-network, create if doesn't exist
+(docker network ls | grep -E '(^|\s)bowtie-dev($|\s)') || docker network create bowtie-dev
 
-# Automatically start usac-dev services (if usac-dev exists in PATH)
-(which usac-dev > /dev/null) && (usac-dev start)
+# Automatically start btdev services (if btdev exists in PATH)
+(which btdev > /dev/null) && (btdev start)

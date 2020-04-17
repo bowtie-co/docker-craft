@@ -21,5 +21,19 @@ return [
     'modules' => [
         'my-module' => \modules\Module::class,
     ],
+    'components' => [
+        'log' => function() {
+            return Craft::createObject([
+                'class' => yii\log\Dispatcher::class,
+                'targets' => [
+                    [
+                        'url' => 'php://stderr',
+                        'class' => codemix\streamlog\Target::class,
+                        'levels' => yii\log\Logger::LEVEL_WARNING,
+                    ]
+                ]
+            ]);
+        }
+    ],
     //'bootstrap' => ['my-module'],
 ];

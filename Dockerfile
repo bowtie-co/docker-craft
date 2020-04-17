@@ -48,9 +48,6 @@ RUN composer install
 # Copy existing application directory contents
 COPY . .
 
-# Change ownership for required permissions
-RUN chown -R $APP_USER:$APP_USER storage vendor public/cpresources
-
 # Expose port 80 and start php-fpm server
 EXPOSE 80
 

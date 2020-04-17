@@ -2,6 +2,6 @@
 
 bin/run "bin/clean"
 bin/run "bin/docker-build"
-# bin/run "docker-compose run -l traefik.enable=false --rm usac-craft bin/db-init"
-# bin/run "docker-compose run -l traefik.enable=false --rm usac-craft bin/db-setup"
+# bin/run "docker-compose run -l traefik.enable=false --rm craft-cms bin/db-init"
+# bin/run "docker-compose run -l traefik.enable=false --rm craft-cms bin/db-setup"
 bin/run "bin/install"
