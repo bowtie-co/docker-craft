@@ -15,11 +15,17 @@ services:
     networks:
       - proxy-network
     environment:
+      # DB_DSN: mysql:host=nextgen-db;port=3306;dbname=craft_local
+      # DB_HOST: nextgen-db
+      # DB_PORT: 3306
+      # DB_USER: root
+      # DB_PASSWORD: usacycling
+      # DB_NAME: craft_local
       DATABASE_HOST: nextgen-db
       DATABASE_PORT: 3306
       DATABASE_USER: root
       DATABASE_PASS: usacycling
-      DATABASE_NAME: nextgen_local
+      DATABASE_NAME: craft_local
       APP_NAME: usac-craft
       APP_ENV: local
       # LOG_CHANNEL: stack

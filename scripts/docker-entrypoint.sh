@@ -35,6 +35,10 @@ chown -R $APP_USER:$APP_USER storage vendor web/cpresources
 
 $APP_DIR/scripts/wait-for-it.sh $DATABASE_HOST:$DATABASE_PORT
 
+export DB_DSN=${DB_DSN:-"mysql:host=$DATABASE_HOST;port=$DATABASE_PORT;dbname=$DATABASE_NAME"}
+export DB_USER=${DB_USER:-$DATABASE_USER}
+export DB_PASSWORD=${DB_PASSWORD:-$DATABASE_PASS}
+
 # if [[ "$APP_ENV" == "local" ]]; then
 #   table_dumps_dir=/var/www/database/dumps/tables
 
