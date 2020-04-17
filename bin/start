@@ -1,0 +1,4 @@
+#!/bin/bash
+
+bin/run "bin/pre-start"
+bin/run "docker-compose up --force-recreate" $@

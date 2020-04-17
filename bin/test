@@ -1,0 +1,3 @@
+#!/bin/bash
+
+bin/run "docker-compose run -l traefik.enable=false -e DATABASE_CONN=sqlite  -e DATABASE_NAME=:memory: --rm usac-craft vendor/bin/paratest --path tests  " $@

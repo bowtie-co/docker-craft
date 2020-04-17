@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# COLORS! :)
+red='\033[0;31m'
+cyan='\033[0;36m'
+blue='\033[0;34m'
+yellow='\033[0;33m'
+nocolor='\033[0m'
+
+error() {
+  prefix="[ERROR] "
+  echo
+  echo -e "${red}${prefix}${1}${nocolor}"
+  echo
+}
+
+warn() {
+  prefix="[WARNING] "
+  echo
+  echo -e "${yellow}${prefix}${1}${nocolor}"
+  echo
+}
+
+log() {
+  prefix="[INFO] "
+  echo
+  echo -e "${cyan}${prefix}${1}${nocolor}"
+  echo
+}
+
+confirmYes() {
+  echo ""
+  msg="${1:-Are you sure?}"
+  read -r -p "${msg} [Y/n] " response
+  case "$response" in
+    [nN][oO]|[nN])
+      return 1
+      ;;
+    *)
+      return 0
+      ;;
+  esac
+}
+
+if [[ -f .env ]]; then
+  warn "Looks like you still have the ignored .env file. This may cause issues with expected local Docker usage."
+  warn "You should remove or rename the .env file, and maintain environment variables in docker-compose.yml instead."
+
+  if confirmYes "Rename .env file now? (move to .env.backup)"; then
+    mv .env .env.backup
+
+    log "Done renaming file: .env -> .env.backup"
+  else
+    warn "Please double check .env contents for potential env conflicts"
+  fi
+fi
+
+# Check for usac-dev docker-network, create if doesn't exist
+(docker network ls | grep -E '(^|\s)usac-dev($|\s)') || docker network create usac-dev
+
+# Automatically start usac-dev services (if usac-dev exists in PATH)
+(which usac-dev > /dev/null) && (usac-dev start)

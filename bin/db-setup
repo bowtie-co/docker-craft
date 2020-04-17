@@ -1,0 +1,56 @@
+#!/bin/bash
+
+FAKE_PROFILES_SQL=$APP_DIR/database/translations/fake-profile-seeds.sql
+BUILD_USER_PERMS_SQL=$APP_DIR/database/translations/build-user-perms.sql
+SEED_LA_BY_EMAIL_SQL=$APP_DIR/database/translations/seed-association-profiles-by-email.sql
+SEED_LA_BY_COMPID_SQL=$APP_DIR/database/translations/seed-association-profiles-by-compid.sql
+
+# COLORS! :)
+red='\033[0;31m'
+cyan='\033[0;36m'
+blue='\033[0;34m'
+yellow='\033[0;33m'
+nocolor='\033[0m'
+
+error() {
+  prefix="[ERROR] "
+  echo
+  echo -e "${red}${prefix}${1}${nocolor}"
+  echo
+}
+
+warn() {
+  prefix="[WARNING] "
+  echo
+  echo -e "${yellow}${prefix}${1}${nocolor}"
+  echo
+}
+
+log() {
+  prefix="[INFO] "
+  echo
+  echo -e "${cyan}${prefix}${1}${nocolor}"
+  echo
+}
+
+if [[ "$APP_ENV" == "local" ]]; then
+  log "Running local env, setting up fake/seed data ..."
+
+  profile_check=$(mysql -h ${DATABASE_HOST} -u ${DATABASE_USER} -p${DATABASE_PASS} -D ${DATABASE_NAME} -e "select * from profile limit 2")
+
+  if [[ "$profile_check" == "" ]]; then
+    warn "No profiles found!"
+
+    log "Adding fake profiles seeds (TEMPORARY) ..."
+    mysql -h ${DATABASE_HOST} -u ${DATABASE_USER} -p${DATABASE_PASS} ${DATABASE_NAME} < $FAKE_PROFILES_SQL || error "Failed importing fake profiles from file: $FAKE_PROFILES_SQL"
+  fi
+
+  log "Resetting LA Admin relationships (associations -> profile) ..."
+  mysql -h ${DATABASE_HOST} -u ${DATABASE_USER} -p${DATABASE_PASS} ${DATABASE_NAME} < $SEED_LA_BY_EMAIL_SQL || error "Failed importing LA admins (by profile_email) from file: $SEED_LA_BY_EMAIL_SQL"
+  mysql -h ${DATABASE_HOST} -u ${DATABASE_USER} -p${DATABASE_PASS} ${DATABASE_NAME} < $SEED_LA_BY_COMPID_SQL || error "Failed importing LA admins (by profile_comp_id) from file: $SEED_LA_BY_COMPID_SQL"
+
+  log "Updating permissions ..."
+  mysql -h ${DATABASE_HOST} -u ${DATABASE_USER} -p${DATABASE_PASS} ${DATABASE_NAME} < $BUILD_USER_PERMS_SQL || error "Failed importing user permissions from file: $BUILD_USER_PERMS_SQL"
+
+  log "Finished initializing database."
+fi

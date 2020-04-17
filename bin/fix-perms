@@ -1,0 +1,19 @@
+#!/bin/bash
+
+BASE_DIR=${BASE_DIR:-.}
+
+CACHE_DIR=$BASE_DIR/bootstrap/cache
+STORAGE_DIR=$BASE_DIR/storage
+
+change_ownership="chown -R 1000:33 $CACHE_DIR $STORAGE_DIR"
+change_permissions="chmod -R 775 $CACHE_DIR $STORAGE_DIR"
+
+which sudo > /dev/null
+
+if [[ "$?" == "0" ]]; then
+  change_ownership="sudo $change_ownership"
+  change_permissions="sudo $change_permissions"
+fi
+
+bin/run "$change_ownership"
+bin/run "$change_permissions"

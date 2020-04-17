@@ -1,0 +1,4 @@
+#!/bin/bash
+
+bin/run "bin/stop"
+bin/run "bin/start"

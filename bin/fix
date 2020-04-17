@@ -1,0 +1,6 @@
+#!/bin/bash
+
+bin/run "bin/rebuild"
+bin/run "bin/install"
+# bin/run "bin/rebuild-node-sass"
+bin/run "bin/lint-fix"
